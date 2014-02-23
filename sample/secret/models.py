@@ -18,14 +18,13 @@ class EncryptedAttr(object):
         '''A simple XOR chiper'''
         return ''.join(chr(ord(a) ^ ord(b)) for (a, b) in zip(self.key, v))
 
-    def __get__(self, obj, owner):
+    def __get__(self, obj, klass):
         '''Get `attr` from owner, and decrypt it'''
         cipher_text = getattr(obj, self.attr, None)
         if not cipher_text:
             return ''
 
         return self.decrypt(cipher_text)
-
 
     def __set__(self, obj, value):
         '''Encrypt value, and set to owner via `attr`'''
